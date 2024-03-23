@@ -41,6 +41,7 @@ _copyright_header: str = f"sqlite3mysql version {package_version} Copyright (c) 
     "Implies --without-foreign-keys which inhibits the transfer of foreign keys.",
 )
 @click.option("-X", "--without-foreign-keys", is_flag=True, help="Do not transfer foreign keys.")
+@click.option("-S", "--skip-data", is_flag=True, help="Do not transfer data content.")
 @click.option(
     "-W",
     "--ignore-duplicate-keys",
@@ -148,6 +149,7 @@ def cli(
     log_file: t.Union[str, "os.PathLike[t.Any]"],
     quiet: bool,
     debug: bool,
+    skip_data : bool
 ) -> None:
     """Transfer SQLite to MySQL using the provided CLI options."""
     click.echo(_copyright_header)
@@ -184,6 +186,7 @@ def cli(
             chunk=chunk,
             log_file=log_file,
             quiet=quiet,
+            skip_data=skip_data
         ).transfer()
     except KeyboardInterrupt:
         if debug:
